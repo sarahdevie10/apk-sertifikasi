@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Admin</title>
+    <title>Login Sertifikasi</title>
 
     <style>
         * {
@@ -130,7 +130,7 @@
             S
         </div>
 
-        <h2>Login Admin</h2>
+        <h2>Login Sertifikasi</h2>
 
         <p class="subtitle">
             Aplikasi Pengelolaan Data Peserta Sertifikasi
@@ -166,6 +166,14 @@
                 Login
             </button>
         </form>
+
+        <p style="text-align: center; margin-top: 18px; font-size: 13px; color: #64748b;">
+    Belum punya akun?
+    <a href="{{ route('register') }}"
+       style="color: #111827; font-weight: bold; text-decoration: none;">
+        Daftar di sini
+    </a>
+        </p>
 
         <div class="footer">
             Sistem Sertifikasi © 2026

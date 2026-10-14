@@ -1,5 +1,5 @@
 
-@extends('layouts.admin')
+@extends('layouts.layout')
 
 @section('title', 'Data Peserta')
 

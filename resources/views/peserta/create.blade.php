@@ -1,5 +1,5 @@
 
-@extends('layouts.admin')
+@extends('layouts.layout')
 
 @section('title', 'Tambah Peserta')
 
@@ -128,6 +128,126 @@
                 flex-wrap: wrap;
             }
         }
+         .page-header {
+        margin-bottom: 24px;
+    }
+
+    .page-header h1 {
+        font-size: 22px;
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+    .card {
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 28px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .full-width {
+        grid-column: span 2;
+    }
+
+    label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #334155;
+        margin-bottom: 6px;
+    }
+
+    .required {
+        color: #dc2626;
+    }
+
+    .form-control {
+        padding: 10px 12px;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        font-size: 14px;
+        outline: none;
+        transition: border-color 0.2s;
+        width: 100%;
+    }
+
+    textarea.form-control {
+        resize: vertical;
+        min-height: 80px;
+    }
+
+    .form-control:focus {
+        border-color: #0f172a;
+    }
+
+    .field-error {
+        color: #dc2626;
+        font-size: 12px;
+        margin-top: 4px;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 28px;
+        padding-top: 20px;
+        border-top: 1px solid #f1f5f9;
+    }
+
+    .btn {
+        background-color: #0f172a;
+        color: #ffffff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .btn:hover {
+        background-color: #1e293b;
+    }
+
+    .btn-cancel {
+        background-color: #f1f5f9;
+        color: #475569;
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .btn-cancel:hover {
+        background-color: #e2e8f0;
+    }
+
+    @media (max-width: 640px) {
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+        .full-width {
+            grid-column: span 1;
+        }
+    }
     </style>
 
     <div class="page-header">
@@ -156,172 +276,197 @@
             Kolom bertanda <span class="required">*</span> wajib diisi.
         </p>
 
-        <form action="{{ route('peserta.store') }}" method="POST">
-            @csrf
 
-            <div class="form-grid">
+<div class="page-header">
+    <h1>Tambah Peserta Baru</h1>
+</div>
 
-                <div class="form-group">
-                    <label for="no_peserta">
-                        Nomor Peserta <span class="required">*</span>
-                    </label>
+<div class="card">
+    <form action="{{ route('peserta.store') }}" method="POST">
+        @csrf
 
-                    <input
-                        type="text"
-                        id="no_peserta"
-                        name="no_peserta"
-                        class="form-control"
-                        placeholder="Contoh: P003"
-                        value="{{ old('no_peserta') }}"
-                        required
-                    >
+        <div class="form-grid">
 
-                    @error('no_peserta')
-                        <div class="field-error">{{ $message }}</div>
-                    @enderror
-                </div>
+            <div class="form-group">
+                <label for="no_peserta">
+                    Nomor Peserta <span class="required">*</span>
+                </label>
 
-                <div class="form-group">
-                    <label for="nama">
-                        Nama Lengkap <span class="required">*</span>
-                    </label>
+                <input
+                    type="text"
+                    id="no_peserta"
+                    name="no_peserta"
+                    class="form-control"
+                    placeholder="Contoh: P003"
+                    value="{{ old('no_peserta') }}"
+                    required
+                >
 
-                    <input
-                        type="text"
-                        id="nama"
-                        name="nama"
-                        class="form-control"
-                        placeholder="Masukkan nama lengkap"
-                        value="{{ old('nama') }}"
-                        required
-                    >
-
-                    @error('nama')
-                        <div class="field-error">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="nik">
-                        NIK <span class="required">*</span>
-                    </label>
-
-                    <input
-                        type="text"
-                        id="nik"
-                        name="nik"
-                        class="form-control"
-                        placeholder="Masukkan nomor NIK"
-                        value="{{ old('nik') }}"
-                        required
-                    >
-
-                    @error('nik')
-                        <div class="field-error">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="jenis_kelamin">
-                        Jenis Kelamin <span class="required">*</span>
-                    </label>
-
-                    <select
-                        id="jenis_kelamin"
-                        name="jenis_kelamin"
-                        class="form-control"
-                        required
-                    >
-                        <option value="">-- Pilih Jenis Kelamin --</option>
-                        <option value="Laki-laki"
-                            {{ old('jenis_kelamin') == 'Laki-laki' ? 'selected' : '' }}>
-                            Laki-laki
-                        </option>
-                        <option value="Perempuan"
-                            {{ old('jenis_kelamin') == 'Perempuan' ? 'selected' : '' }}>
-                            Perempuan
-                        </option>
-                    </select>
-
-                    @error('jenis_kelamin')
-                        <div class="field-error">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="no_telepon">Nomor Telepon</label>
-
-                    <input
-                        type="tel"
-                        id="no_telepon"
-                        name="no_telepon"
-                        class="form-control"
-                        placeholder="Masukkan nomor telepon"
-                        value="{{ old('no_telepon') }}"
-                    >
-
-                    @error('no_telepon')
-                        <div class="field-error">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="skema_id">
-                        Skema Sertifikasi <span class="required">*</span>
-                    </label>
-
-                    <select
-                        id="skema_id"
-                        name="skema_id"
-                        class="form-control"
-                        required
-                    >
-                        <option value="">-- Pilih Skema Sertifikasi --</option>
-
-                        @foreach($skemas as $skema)
-                            <option
-                                value="{{ $skema->id }}"
-                                {{ old('skema_id') == $skema->id ? 'selected' : '' }}
-                            >
-                                {{ $skema->kode_skema }} - {{ $skema->nama_skema }}
-                            </option>
-                        @endforeach
-                    </select>
-
-                    @error('skema_id')
-                        <div class="field-error">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div class="form-group full-width">
-                    <label for="alamat">Alamat</label>
-
-                    <textarea
-                        id="alamat"
-                        name="alamat"
-                        class="form-control"
-                        placeholder="Masukkan alamat peserta"
-                    >{{ old('alamat') }}</textarea>
-
-                    @error('alamat')
-                        <div class="field-error">{{ $message }}</div>
-                    @enderror
-                </div>
-
+                @error('no_peserta')
+                    <div class="field-error">{{ $message }}</div>
+                @enderror
             </div>
 
-            <div class="form-actions">
-                <a href="{{ route('peserta.index') }}" class="btn-cancel">
-                    Batal
-                </a>
+            <div class="form-group">
+                <label for="nama">
+                    Nama Lengkap <span class="required">*</span>
+                </label>
 
-                <button type="submit" class="btn">
-                    Simpan Peserta
-                </button>
+                <input
+                    type="text"
+                    id="nama"
+                    name="nama"
+                    class="form-control"
+                    placeholder="Masukkan nama lengkap"
+                    value="{{ old('nama') }}"
+                    required
+                >
+
+                @error('nama')
+                    <div class="field-error">{{ $message }}</div>
+                @enderror
             </div>
 
-        </form>
+            {{-- Input Email ditambahkan agar akun user otomatis terbuat --}}
+            <div class="form-group full-width">
+                <label for="email">
+                    Alamat Email (Untuk Akun Login) <span class="required">*</span>
+                </label>
 
-    </div>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    class="form-control"
+                    placeholder="Masukkan alamat email aktif"
+                    value="{{ old('email') }}"
+                    required
+                >
 
+                @error('email')
+                    <div class="field-error">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="form-group">
+                <label for="nik">
+                    NIK <span class="required">*</span>
+                </label>
+
+                <input
+                    type="text"
+                    id="nik"
+                    name="nik"
+                    class="form-control"
+                    placeholder="Masukkan nomor NIK"
+                    value="{{ old('nik') }}"
+                    required
+                >
+
+                @error('nik')
+                    <div class="field-error">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="form-group">
+                <label for="jenis_kelamin">
+                    Jenis Kelamin <span class="required">*</span>
+                </label>
+
+                {{-- Value disesuaikan dengan enum L / P di database --}}
+                <select
+                    id="jenis_kelamin"
+                    name="jenis_kelamin"
+                    class="form-control"
+                    required
+                >
+                    <option value="">-- Pilih Jenis Kelamin --</option>
+                    <option value="L" {{ old('jenis_kelamin') == 'L' ? 'selected' : '' }}>
+                        Laki-laki
+                    </option>
+                    <option value="P" {{ old('jenis_kelamin') == 'P' ? 'selected' : '' }}>
+                        Perempuan
+                    </option>
+                </select>
+
+                @error('jenis_kelamin')
+                    <div class="field-error">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="form-group">
+                <label for="no_telepon">Nomor Telepon</label>
+
+                <input
+                    type="tel"
+                    id="no_telepon"
+                    name="no_telepon"
+                    class="form-control"
+                    placeholder="Masukkan nomor telepon"
+                    value="{{ old('no_telepon') }}"
+                >
+
+                @error('no_telepon')
+                    <div class="field-error">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="form-group">
+                <label for="skema_id">
+                    Skema Sertifikasi <span class="required">*</span>
+                </label>
+
+                <select
+                    id="skema_id"
+                    name="skema_id"
+                    class="form-control"
+                    required
+                >
+                    <option value="">-- Pilih Skema Sertifikasi --</option>
+
+                    @foreach($skemas as $skema)
+                        <option
+                            value="{{ $skema->id }}"
+                            {{ old('skema_id') == $skema->id ? 'selected' : '' }}
+                        >
+                            {{ $skema->kode_skema }} - {{ $skema->nama_skema }}
+                        </option>
+                    @endforeach
+                </select>
+
+                @error('skema_id')
+                    <div class="field-error">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="form-group full-width">
+                <label for="alamat">Alamat</label>
+
+                <textarea
+                    id="alamat"
+                    name="alamat"
+                    class="form-control"
+                    placeholder="Masukkan alamat peserta"
+                >{{ old('alamat') }}</textarea>
+
+                @error('alamat')
+                    <div class="field-error">{{ $message }}</div>
+                @enderror
+            </div>
+
+        </div>
+
+        <div class="form-actions">
+            <a href="{{ route('peserta.index') }}" class="btn-cancel">
+                Batal
+            </a>
+
+            <button type="submit" class="btn">
+                Simpan Peserta
+            </button>
+        </div>
+
+    </form>
+</div>
 @endsection
+

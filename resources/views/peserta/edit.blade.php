@@ -82,140 +82,148 @@
 
 <body>
 
-<div class="container">
+<div class="page-header">
+    <h1>Edit Data Peserta</h1>
+</div>
 
-    <h2>Edit Data Peserta</h2>
-
+<div class="card">
     <form action="{{ route('peserta.update', $peserta->id) }}" method="POST">
-
         @csrf
         @method('PUT')
 
-        <div class="form-group">
-            <label>No Peserta</label>
+        <div class="form-grid">
 
-            <input
-                type="text"
-                name="no_peserta"
-                value="{{ old('no_peserta', $peserta->no_peserta) }}"
-            >
+            <div class="form-group">
+                <label for="no_peserta">No. Peserta <span class="required">*</span></label>
+                <input
+                    type="text"
+                    id="no_peserta"
+                    name="no_peserta"
+                    class="form-control"
+                    value="{{ old('no_peserta', $peserta->no_peserta) }}"
+                    required
+                >
+                @error('no_peserta')
+                    <div class="error">{{ $message }}</div>
+                @enderror
+            </div>
 
-            @error('no_peserta')
-                <div class="error">{{ $message }}</div>
-            @enderror
-        </div>
+            <div class="form-group">
+                <label for="nama">Nama Peserta <span class="required">*</span></label>
+                <input
+                    type="text"
+                    id="nama"
+                    name="nama"
+                    class="form-control"
+                    value="{{ old('nama', $peserta->nama) }}"
+                    required
+                >
+                @error('nama')
+                    <div class="error">{{ $message }}</div>
+                @enderror
+            </div>
 
-        <div class="form-group">
-            <label>Nama Peserta</label>
+            {{-- Input Email ditambahkan agar akun User terhubung ikut ter-update --}}
+            <div class="form-group full-width">
+                <label for="email">Alamat Email (Akun Login) <span class="required">*</span></label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    class="form-control"
+                    value="{{ old('email', $peserta->user->email ?? '') }}"
+                    required
+                >
+                @error('email')
+                    <div class="error">{{ $message }}</div>
+                @enderror
+            </div>
 
-            <input
-                type="text"
-                name="nama"
-                value="{{ old('nama', $peserta->nama) }}"
-            >
+            <div class="form-group">
+                <label for="nik">NIK <span class="required">*</span></label>
+                <input
+                    type="text"
+                    id="nik"
+                    name="nik"
+                    class="form-control"
+                    value="{{ old('nik', $peserta->nik) }}"
+                    required
+                >
+                @error('nik')
+                    <div class="error">{{ $message }}</div>
+                @enderror
+            </div>
 
-            @error('nama')
-                <div class="error">{{ $message }}</div>
-            @enderror
-        </div>
-
-        <div class="form-group">
-            <label>NIK</label>
-
-            <input
-                type="text"
-                name="nik"
-                value="{{ old('nik', $peserta->nik) }}"
-            >
-
-            @error('nik')
-                <div class="error">{{ $message }}</div>
-            @enderror
-        </div>
-
-        <div class="form-group">
-            <label>Jenis Kelamin</label>
-
-            <select name="jenis_kelamin">
-                <option value="">-- Pilih Jenis Kelamin --</option>
-
-                <option value="Laki-laki"
-                    {{ old('jenis_kelamin', $peserta->jenis_kelamin) == 'Laki-laki' ? 'selected' : '' }}>
-                    Laki-laki
-                </option>
-
-                <option value="Perempuan"
-                    {{ old('jenis_kelamin', $peserta->jenis_kelamin) == 'Perempuan' ? 'selected' : '' }}>
-                    Perempuan
-                </option>
-            </select>
-
-            @error('jenis_kelamin')
-                <div class="error">{{ $message }}</div>
-            @enderror
-        </div>
-
-        <div class="form-group">
-            <label>Alamat</label>
-
-            <textarea name="alamat">{{ old('alamat', $peserta->alamat) }}</textarea>
-
-            @error('alamat')
-                <div class="error">{{ $message }}</div>
-            @enderror
-        </div>
-
-        <div class="form-group">
-            <label>No. Telepon</label>
-
-            <input
-                type="text"
-                name="no_telepon"
-                value="{{ old('no_telepon', $peserta->no_telepon) }}"
-            >
-
-            @error('no_telepon')
-                <div class="error">{{ $message }}</div>
-            @enderror
-        </div>
-
-        <div class="form-group">
-            <label>Skema Sertifikasi</label>
-
-            <select name="skema_id">
-
-                <option value="">-- Pilih Skema Sertifikasi --</option>
-
-                @foreach($skemas as $skema)
-                    <option
-                        value="{{ $skema->id }}"
-                        {{ old('skema_id', $peserta->skema_id) == $skema->id ? 'selected' : '' }}
-                    >
-                        {{ $skema->kode_skema }} - {{ $skema->nama_skema }}
+            <div class="form-group">
+                <label for="jenis_kelamin">Jenis Kelamin <span class="required">*</span></label>
+                {{-- Value disesuaikan dengan enum L / P --}}
+                <select id="jenis_kelamin" name="jenis_kelamin" class="form-control" required>
+                    <option value="">-- Pilih Jenis Kelamin --</option>
+                    <option value="L" {{ old('jenis_kelamin', $peserta->jenis_kelamin) == 'L' ? 'selected' : '' }}>
+                        Laki-laki
                     </option>
-                @endforeach
+                    <option value="P" {{ old('jenis_kelamin', $peserta->jenis_kelamin) == 'P' ? 'selected' : '' }}>
+                        Perempuan
+                    </option>
+                </select>
+                @error('jenis_kelamin')
+                    <div class="error">{{ $message }}</div>
+                @enderror
+            </div>
 
-            </select>
+            <div class="form-group">
+                <label for="no_telepon">No. Telepon</label>
+                <input
+                    type="text"
+                    id="no_telepon"
+                    name="no_telepon"
+                    class="form-control"
+                    value="{{ old('no_telepon', $peserta->no_telepon) }}"
+                >
+                @error('no_telepon')
+                    <div class="error">{{ $message }}</div>
+                @enderror
+            </div>
 
-            @error('skema_id')
-                <div class="error">{{ $message }}</div>
-            @enderror
+            <div class="form-group">
+                <label for="skema_id">Skema Sertifikasi <span class="required">*</span></label>
+                <select id="skema_id" name="skema_id" class="form-control" required>
+                    <option value="">-- Pilih Skema Sertifikasi --</option>
+                    @foreach($skemas as $skema)
+                        <option
+                            value="{{ $skema->id }}"
+                            {{ old('skema_id', $peserta->skema_id) == $skema->id ? 'selected' : '' }}
+                        >
+                            {{ $skema->kode_skema }} - {{ $skema->nama_skema }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('skema_id')
+                    <div class="error">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="form-group full-width">
+                <label for="alamat">Alamat</label>
+                <textarea id="alamat" name="alamat" class="form-control">{{ old('alamat', $peserta->alamat) }}</textarea>
+                @error('alamat')
+                    <div class="error">{{ $message }}</div>
+                @enderror
+            </div>
+
         </div>
 
         <div class="buttons">
-
-            <button type="submit" class="btn btn-save">
-                Simpan Perubahan
-            </button>
-
             <a href="{{ route('peserta.index') }}" class="btn btn-back">
                 Kembali
             </a>
 
+            <button type="submit" class="btn btn-save">
+                Simpan Perubahan
+            </button>
         </div>
 
     </form>
-
 </div>
 
 </body>

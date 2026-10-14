@@ -3,839 +3,538 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard User - Sertifikasi</title>
-
-    @php
-        $user = auth()->user();
-        $peserta = $pesertas->first();
-    @endphp
-
+    <title>Dashboard Peserta - Sertifikasi</title>
     <style>
         * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f3f4f8;
-            color: #172033;
+            background-color: #f8fafc;
+            color: #1e293b;
+            min-height: 100vh;
         }
 
-        .topbar {
-            background: #111827;
-            color: white;
-            padding: 18px 4%;
+        /* NAVBAR */
+        .navbar {
+            background-color: #0f172a;
+            color: #ffffff;
+            padding: 16px 32px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            gap: 20px;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        .brand {
-            font-size: 20px;
-            font-weight: bold;
-        }
-
-        .user-area {
+        .navbar-brand {
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
-        .avatar {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: #e5e7eb;
-            color: #4b5563;
+        .brand-logo {
+            width: 36px;
+            height: 36px;
+            background-color: #38bdf8;
+            color: #0f172a;
+            font-weight: bold;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 22px;
+            font-size: 18px;
         }
 
-        .user-info {
-            text-align: right;
+        .brand-title {
+            font-size: 18px;
+            font-weight: 700;
         }
 
-        .user-info strong {
-            display: block;
-            font-size: 14px;
-        }
-
-        .user-info small {
-            color: #d1d5db;
-        }
-
-        .logout {
-            background: #ef4444;
+        .logout-btn {
+            background-color: #ef4444;
             color: white;
             border: none;
-            border-radius: 8px;
-            padding: 11px 17px;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
             cursor: pointer;
-            font-weight: bold;
+            transition: background 0.2s;
         }
 
-        .logout:hover {
-            background: #dc2626;
+        .logout-btn:hover {
+            background-color: #dc2626;
         }
 
+        /* CONTAINER */
         .container {
-            width: 92%;
-            max-width: 1200px;
-            margin: 30px auto;
+            max-width: 900px;
+            margin: 32px auto;
+            padding: 0 20px;
         }
 
-        .card {
-            background: white;
-            border: 1px solid #e0e3e9;
-            border-radius: 13px;
-            margin-bottom: 22px;
-            overflow: hidden;
-        }
-
-        .welcome {
-            padding: 24px;
-        }
-
-        .welcome h1 {
-            font-size: 26px;
-            margin: 0 0 12px;
-        }
-
-        .welcome p {
-            color: #64748b;
-            line-height: 1.7;
-            margin: 0;
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 18px;
+        .page-header {
             margin-bottom: 24px;
         }
 
-        .stat-card {
-            background: white;
-            border: 1px solid #e0e3e9;
-            border-radius: 13px;
-            padding: 22px;
+        .page-header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0f172a;
         }
 
-        .stat-card p {
-            color: #64748b;
-            margin: 0 0 12px;
-        }
-
-        .stat-card h2 {
-            font-size: 30px;
-            margin: 0;
-        }
-
-        .card-header {
-            padding: 21px 24px;
-            border-bottom: 1px solid #e0e3e9;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .card-header h2 {
-            font-size: 21px;
-            margin: 0 0 7px;
-        }
-
-        .card-header p {
-            color: #64748b;
-            margin: 0;
+        .page-header p {
             font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .card-body {
-            padding: 24px;
-        }
-
-        .detail-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 22px;
-        }
-
-        .detail-item {
-            padding-bottom: 14px;
-            border-bottom: 1px solid #edf0f4;
-            min-width: 0;
-        }
-
-        .detail-item label {
-            display: block;
             color: #64748b;
-            font-size: 13px;
-            margin-bottom: 8px;
         }
 
-        .detail-item strong {
-            display: block;
-            font-size: 15px;
-            overflow-wrap: anywhere;
-            white-space: pre-line;
-        }
-
-        .btn {
-            border: none;
-            border-radius: 8px;
-            padding: 11px 17px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            display: inline-block;
-            text-decoration: none;
-        }
-
-        .btn-edit {
-            background: #2563eb;
-            color: white;
-        }
-
-        .btn-edit:hover {
-            background: #1d4ed8;
-        }
-
-        .btn-save {
-            background: #16a34a;
-            color: white;
-        }
-
-        .btn-save:hover {
-            background: #15803d;
-        }
-
-        .btn-cancel {
-            background: #e5e7eb;
-            color: #374151;
-        }
-
-        .btn-cancel:hover {
-            background: #d1d5db;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 18px;
-        }
-
-        .form-group {
-            min-width: 0;
-        }
-
-        .form-group.full {
-            grid-column: 1 / -1;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            font-size: 14px;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            font-size: 14px;
-            font-family: inherit;
-            background: white;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #2563eb;
-            box-shadow: 0 0 0 3px #dbeafe;
-        }
-
-        .form-group input[readonly] {
-            background: #f1f5f9;
-            color: #475569;
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        .form-group small {
-            display: block;
-            margin-top: 6px;
-            color: #64748b;
-            font-size: 12px;
-        }
-
-        .form-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 22px;
-            flex-wrap: wrap;
-        }
-
-        .alert {
-            padding: 13px 16px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-
+        /* ALERT */
         .alert-success {
-            background: #dcfce7;
-            color: #166534;
+            background-color: #dcfce7;
+            color: #15803d;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            border: 1px solid #bbf7d0;
         }
 
         .alert-error {
-            background: #fee2e2;
-            color: #991b1b;
+            background-color: #fee2e2;
+            color: #dc2626;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            border: 1px solid #fecaca;
         }
 
-        .error-text {
-            color: #dc2626;
+        /* CARDS */
+        .card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 28px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            margin-bottom: 24px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* SKEMA BADGE */
+        .skema-badge {
+            background-color: #e0f2fe;
+            color: #0369a1;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .skema-info-box {
+            background-color: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .skema-info-box .label {
             font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+        }
+
+        .skema-info-box .value {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-top: 4px;
+        }
+
+        .skema-info-box .desc {
+            font-size: 13px;
+            color: #475569;
             margin-top: 6px;
         }
 
-        .notice {
-            color: #64748b;
+        /* FORM STYLING */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .full-width {
+            grid-column: span 2;
+        }
+
+        label {
             font-size: 13px;
-            line-height: 1.6;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 6px;
+        }
+
+        .required {
+            color: #dc2626;
+        }
+
+        .form-control {
+            padding: 10px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+            width: 100%;
+        }
+
+        .form-control:read-only, .form-control:disabled {
+            background-color: #f1f5f9;
+            color: #64748b;
+            cursor: not-allowed;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-control:focus:not(:read-only) {
+            border-color: #0f172a;
+        }
+
+        .field-error {
+            color: #dc2626;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .btn-submit {
+            background-color: #0f172a;
+            color: #ffffff;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
             margin-top: 20px;
         }
 
-        .footer {
-            text-align: center;
-            color: #64748b;
-            font-size: 13px;
-            padding: 8px 0 25px;
+        .btn-submit:hover {
+            background-color: #1e293b;
         }
 
-        [hidden] {
-            display: none !important;
-        }
-
-        @media (max-width: 650px) {
-            .topbar {
-                align-items: flex-start;
-                flex-direction: column;
-            }
-
-            .user-area {
-                width: 100%;
-                flex-wrap: wrap;
-            }
-
-            .user-info {
-                text-align: left;
-                flex: 1;
-            }
-
-            .stats,
-            .detail-grid,
+        @media (max-width: 640px) {
             .form-grid {
                 grid-template-columns: 1fr;
             }
-
-            .form-group.full {
-                grid-column: auto;
-            }
-
-            .welcome h1 {
-                font-size: 22px;
-            }
-
-            .card-body,
-            .welcome {
-                padding: 19px;
+            .full-width {
+                grid-column: span 1;
             }
         }
     </style>
 </head>
-
 <body>
 
-    {{-- TOPBAR --}}
-    <header class="topbar">
-        <div class="brand">
-            Sertifikasi - Dashboard User
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="navbar-brand">
+            <div class="brand-logo">S</div>
+            <div class="brand-title">Sistem Sertifikasi</div>
         </div>
 
-        <div class="user-area">
-            <div class="avatar">♙</div>
-
-            <div class="user-info">
-                <strong>{{ $user->name }}</strong>
-                <small>{{ $user->email }}</small>
-            </div>
-
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-
-                <button type="submit" class="logout">
-                    Logout
-                </button>
-            </form>
-        </div>
+        <form action="{{ route('logout') }}" method="POST">
+            @csrf
+            <button type="submit" class="logout-btn">
+                Keluar
+            </button>
+        </form>
     </header>
 
+    <!-- MAIN CONTAINER -->
     <main class="container">
 
-        {{-- PESAN SUKSES --}}
-        @if (session('success'))
-            <div class="alert alert-success">
+        <div class="page-header">
+            <h1>Dashboard Peserta</h1>
+            <p>Selamat datang, <strong>{{ Auth::user()->name }}</strong>! Kelola informasi profil dan pendaftaran sertifikasi Anda.</p>
+        </div>
+
+        {{-- Flash Notification --}}
+        @if(session('success'))
+            <div class="alert-success">
                 {{ session('success') }}
             </div>
         @endif
 
-        {{-- PESAN ERROR --}}
-        @if ($errors->any())
-            <div class="alert alert-error">
-                Ada data yang perlu diperbaiki. Periksa kembali formulir.
+        @if($errors->any())
+            <div class="alert-error">
+                <strong>Gagal memperbarui data:</strong> Mohon periksa kembali inputan Anda.
             </div>
         @endif
 
-        {{-- SAMBUTAN --}}
-        <section class="card welcome">
-            <h1>Halo, {{ $user->name }}!</h1>
+        @php
+            $peserta = $pesertas->first();
+        @endphp
 
-            <p>
-                Selamat datang di Dashboard User Aplikasi Pengelolaan Data
-                Peserta Sertifikasi. Kamu dapat melihat detail data peserta
-                milikmu dan memperbaruinya melalui tombol Edit Data.
-            </p>
-        </section>
-
-        {{-- STATISTIK --}}
-        <section class="stats">
-            <div class="stat-card">
-                <p>Data Peserta Milik Saya</p>
-                <h2>{{ $pesertas->count() }}</h2>
-            </div>
-
-            <div class="stat-card">
-                <p>Skema Sertifikasi Saya</p>
-                <h2>{{ $skemas->count() }}</h2>
-            </div>
-        </section>
-
-        {{-- DETAIL DATA PESERTA --}}
-        <section class="card">
-            <div class="card-header">
-                <div>
-                    <h2>Detail Data Peserta</h2>
-                    <p>
-                        Informasi data peserta yang terhubung dengan akunmu.
-                    </p>
+        @if($peserta)
+            <!-- SKEMA SERTIFIKASI CARD (READ-ONLY) -->
+            <div class="card">
+                <div class="card-title">
+                    <span>Skema Sertifikasi Terdaftar</span>
+                    <span class="skema-badge">Terdaftar</span>
                 </div>
 
-                <button
-                    type="button"
-                    class="btn btn-edit"
-                    onclick="toggleEdit()"
-                    id="editButton"
-                >
-                    Edit Data
-                </button>
-            </div>
-
-            <div class="card-body">
-                <div class="detail-grid">
-
-                    <div class="detail-item">
-                        <label>Nama Lengkap</label>
-                        <strong>{{ $peserta?->nama ?: $user->name }}</strong>
+                <div class="skema-info-box">
+                    <div class="label">Kode & Nama Skema</div>
+                    <div class="value">
+                        {{ $peserta->skema->kode_skema ?? '-' }} - {{ $peserta->skema->nama_skema ?? 'Skema tidak ditemukan' }}
                     </div>
-
-                    <div class="detail-item">
-                        <label>Nomor Peserta</label>
-                        <strong>{{ $peserta?->no_peserta ?: 'Belum diisi' }}</strong>
-                    </div>
-
-                    <div class="detail-item">
-                        <label>NIK</label>
-                        <strong>{{ $peserta?->nik ?: 'Belum diisi' }}</strong>
-                    </div>
-
-                    <div class="detail-item">
-                        <label>Jenis Kelamin</label>
-                        <strong>{{ $peserta?->jenis_kelamin ?: 'Belum diisi' }}</strong>
-                    </div>
-
-                    <div class="detail-item">
-                        <label>Nomor Telepon</label>
-                        <strong>{{ $peserta?->no_telepon ?: 'Belum diisi' }}</strong>
-                    </div>
-
-                    <div class="detail-item">
-                        <label>Skema Sertifikasi</label>
-                        <strong>{{ $peserta?->skema?->nama_skema ?: 'Belum dipilih' }}</strong>
-                    </div>
-
-                    <div class="detail-item">
-                        <label>Email Akun</label>
-                        <strong>{{ $user->email }}</strong>
-                    </div>
-
-                    <div class="detail-item">
-                        <label>Alamat</label>
-                        <strong>{{ $peserta?->alamat ?: 'Belum diisi' }}</strong>
-                    </div>
-
+                    @if(optional($peserta->skema)->deskripsi)
+                        <div class="desc">{{ $peserta->skema->deskripsi }}</div>
+                    @endif
                 </div>
 
-                @unless ($peserta)
-                    <p class="notice">
-                        Data peserta belum tersimpan. Tekan Edit Data untuk
-                        melengkapi data pertama kali.
-                    </p>
-                @endunless
+                <p style="font-size: 12px; color: #64748b; font-style: italic;">
+                    * Skema sertifikasi bersifat tetap dan tidak dapat diubah secara mandiri.
+                </p>
             </div>
-        </section>
 
-        {{-- FORM EDIT ATAU PENGISIAN PERTAMA --}}
-        <section
-            class="card"
-            id="editForm"
-            @if (!$errors->any()) hidden @endif
-        >
-            <div class="card-header">
-                <div>
-                    <h2>
-                        {{ $peserta ? 'Edit Data Peserta' : 'Lengkapi Data Peserta' }}
-                    </h2>
-
-                    <p>
-                        {{ $peserta
-                            ? 'Perbarui informasi data peserta milikmu.'
-                            : 'Isi data peserta agar tersimpan di sistem.' }}
-                    </p>
+            <!-- EDIT PROFIL PESERTA CARD -->
+            <div class="card">
+                <div class="card-title">
+                    <span>Edit Profil Peserta</span>
                 </div>
-            </div>
 
-            <div class="card-body">
+                <form action="{{ route('peserta.self.update', $peserta->id) }}" method="POST">
+                    @csrf
+                    @method('PUT')
 
-                {{-- JIKA DATA PESERTA SUDAH ADA: FORM EDIT --}}
-                @if ($peserta)
+                    <div class="form-grid">
 
-                    <form
-                        action="{{ route('user.peserta.update', $peserta->id) }}"
-                        method="POST"
-                    >
-                        @csrf
-                        @method('PUT')
-
-                        <div class="form-grid">
-
-                            <div class="form-group">
-                                <label>Nama Lengkap</label>
-
-                                <input
-                                    type="text"
-                                    name="name"
-                                    value="{{ old('name', $peserta->nama) }}"
-                                    required
-                                >
-
-                                @error('name')
-                                    <div class="error-text">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <label>Nomor Peserta</label>
-
-                                <input
-                                    type="text"
-                                    value="{{ $peserta->no_peserta }}"
-                                    readonly
-                                >
-
-                                <small>
-                                    Nomor peserta tidak diubah melalui formulir ini.
-                                </small>
-                            </div>
-
-                            <div class="form-group">
-                                <label>NIK</label>
-
-                                <input
-                                    type="text"
-                                    name="nik"
-                                    value="{{ old('nik', $peserta->nik) }}"
-                                    required
-                                >
-
-                                @error('nik')
-                                    <div class="error-text">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <label>Jenis Kelamin</label>
-
-                                <select name="jenis_kelamin" required>
-                                    <option value="">Pilih Jenis Kelamin</option>
-
-                                    <option
-                                        value="Laki-laki"
-                                        {{ old('jenis_kelamin', $peserta->jenis_kelamin) == 'Laki-laki' ? 'selected' : '' }}
-                                    >
-                                        Laki-laki
-                                    </option>
-
-                                    <option
-                                        value="Perempuan"
-                                        {{ old('jenis_kelamin', $peserta->jenis_kelamin) == 'Perempuan' ? 'selected' : '' }}
-                                    >
-                                        Perempuan
-                                    </option>
-                                </select>
-
-                                @error('jenis_kelamin')
-                                    <div class="error-text">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <label>Nomor Telepon</label>
-
-                                <input
-                                    type="text"
-                                    name="no_telepon"
-                                    value="{{ old('no_telepon', $peserta->no_telepon) }}"
-                                >
-
-                                @error('no_telepon')
-                                    <div class="error-text">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <label>Skema Sertifikasi</label>
-
-                                <input
-                                    type="text"
-                                    value="{{ $peserta->skema?->nama_skema ?? 'Belum dipilih' }}"
-                                    readonly
-                                >
-
-                                <small>
-                                    Skema sertifikasi tidak diubah melalui formulir ini.
-                                </small>
-                            </div>
-
-                            <div class="form-group full">
-                                <label>Alamat</label>
-
-                                <textarea name="alamat">{{ old('alamat', $peserta->alamat) }}</textarea>
-
-                                @error('alamat')
-                                    <div class="error-text">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                        </div>
-
-                        <div class="form-actions">
-                            <button type="submit" class="btn btn-save">
-                                Simpan Perubahan
-                            </button>
-
-                            <button
-                                type="button"
-                                class="btn btn-cancel"
-                                onclick="toggleEdit()"
+                        <div class="form-group">
+                            <label for="no_peserta">Nomor Peserta</label>
+                            <input
+                                type="text"
+                                id="no_peserta"
+                                class="form-control"
+                                value="{{ $peserta->no_peserta }}"
+                                readonly
                             >
-                                Batal
-                            </button>
-                        </div>
-                    </form>
-
-                {{-- JIKA DATA PESERTA BELUM ADA: FORM PENGISIAN PERTAMA --}}
-                @else
-
-                    <form
-                        action="{{ route('user.peserta.store') }}"
-                        method="POST"
-                    >
-                        @csrf
-
-                        <div class="form-grid">
-
-                            <div class="form-group">
-                                <label>Nama Lengkap</label>
-
-                                <input
-                                    type="text"
-                                    value="{{ $user->name }}"
-                                    readonly
-                                >
-
-                                <small>
-                                    Nama mengikuti nama akun yang terdaftar.
-                                </small>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Nomor Peserta</label>
-
-                                <input
-                                    type="text"
-                                    name="no_peserta"
-                                    value="{{ old('no_peserta') }}"
-                                    placeholder="Contoh: P006"
-                                    required
-                                >
-
-                                @error('no_peserta')
-                                    <div class="error-text">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <label>NIK</label>
-
-                                <input
-                                    type="text"
-                                    name="nik"
-                                    value="{{ old('nik') }}"
-                                    required
-                                >
-
-                                @error('nik')
-                                    <div class="error-text">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <label>Jenis Kelamin</label>
-
-                                <select name="jenis_kelamin" required>
-                                    <option value="">Pilih Jenis Kelamin</option>
-
-                                    <option
-                                        value="Laki-laki"
-                                        {{ old('jenis_kelamin') == 'Laki-laki' ? 'selected' : '' }}
-                                    >
-                                        Laki-laki
-                                    </option>
-
-                                    <option
-                                        value="Perempuan"
-                                        {{ old('jenis_kelamin') == 'Perempuan' ? 'selected' : '' }}
-                                    >
-                                        Perempuan
-                                    </option>
-                                </select>
-
-                                @error('jenis_kelamin')
-                                    <div class="error-text">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <label>Nomor Telepon</label>
-
-                                <input
-                                    type="text"
-                                    name="no_telepon"
-                                    value="{{ old('no_telepon') }}"
-                                >
-
-                                @error('no_telepon')
-                                    <div class="error-text">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <label>Skema Sertifikasi</label>
-
-                                <select name="skema_id" required>
-                                    <option value="">Pilih Skema Sertifikasi</option>
-
-                                    @foreach ($allSkemas as $skema)
-                                        <option
-                                            value="{{ $skema->id }}"
-                                            {{ old('skema_id') == $skema->id ? 'selected' : '' }}
-                                        >
-                                            {{ $skema->nama_skema }}
-                                        </option>
-                                    @endforeach
-                                </select>
-
-                                @error('skema_id')
-                                    <div class="error-text">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="form-group full">
-                                <label>Alamat</label>
-
-                                <textarea name="alamat">{{ old('alamat') }}</textarea>
-
-                                @error('alamat')
-                                    <div class="error-text">{{ $message }}</div>
-                                @enderror
-                            </div>
-
+                            <span style="font-size: 11px; color: #94a3b8; margin-top: 2px;">* Nomor peserta dibuat oleh sistem/admin</span>
                         </div>
 
-                        <div class="form-actions">
-                            <button type="submit" class="btn btn-save">
-                                Simpan Data
-                            </button>
-
-                            <button
-                                type="button"
-                                class="btn btn-cancel"
-                                onclick="toggleEdit()"
+                        <div class="form-group">
+                            <label for="nama">Nama Lengkap <span class="required">*</span></label>
+                            <input
+                                type="text"
+                                id="nama"
+                                name="nama"
+                                class="form-control"
+                                value="{{ old('nama', $peserta->nama) }}"
+                                required
                             >
-                                Batal
-                            </button>
+                            @error('nama')
+                                <div class="field-error">{{ $message }}</div>
+                            @enderror
                         </div>
-                    </form>
 
-                @endif
+                        <div class="form-group">
+                            <label for="nik">NIK <span class="required">*</span></label>
+                            <input
+                                type="text"
+                                id="nik"
+                                name="nik"
+                                class="form-control"
+                                value="{{ old('nik', $peserta->nik) }}"
+                                required
+                            >
+                            @error('nik')
+                                <div class="field-error">{{ $message }}</div>
+                            @enderror
+                        </div>
 
+                        <div class="form-group">
+                            <label for="jenis_kelamin">Jenis Kelamin <span class="required">*</span></label>
+                            <select id="jenis_kelamin" name="jenis_kelamin" class="form-control" required>
+                                <option value="L" {{ old('jenis_kelamin', $peserta->jenis_kelamin) == 'L' ? 'selected' : '' }}>
+                                    Laki-laki
+                                </option>
+                                <option value="P" {{ old('jenis_kelamin', $peserta->jenis_kelamin) == 'P' ? 'selected' : '' }}>
+                                    Perempuan
+                                </option>
+                            </select>
+                            @error('jenis_kelamin')
+                                <div class="field-error">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="no_telepon">Nomor Telepon</label>
+                            <input
+                                type="tel"
+                                id="no_telepon"
+                                name="no_telepon"
+                                class="form-control"
+                                value="{{ old('no_telepon', $peserta->no_telepon) }}"
+                                placeholder="08xxxxxxxxxx"
+                            >
+                            @error('no_telepon')
+                                <div class="field-error">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="alamat">Alamat Lengkap</label>
+                            <textarea
+                                id="alamat"
+                                name="alamat"
+                                class="form-control"
+                                placeholder="Masukkan alamat lengkap"
+                            >{{ old('alamat', $peserta->alamat) }}</textarea>
+                            @error('alamat')
+                                <div class="field-error">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                    </div>
+
+                    <button type="submit" class="btn-submit">
+                        Simpan Perubahan
+                    </button>
+                </form>
             </div>
-        </section>
+        @else
+            <!-- JIKA PESERTA BELUM PUNYA DATA PROFIL -->
+            <div class="card">
+                <div class="card-title">
+                    <span>Lengkapi Data Peserta</span>
+                </div>
 
-        <footer class="footer">
-            &copy; {{ date('Y') }} Aplikasi Pengelolaan Data Peserta Sertifikasi
-        </footer>
+                <form action="{{ route('peserta.self.store') }}" method="POST">
+                    @csrf
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+                            <label for="no_peserta">Nomor Peserta <span class="required">*</span></label>
+                            <input
+                                type="text"
+                                id="no_peserta"
+                                name="no_peserta"
+                                class="form-control"
+                                value="{{ old('no_peserta') }}"
+                                placeholder="Contoh: P001"
+                                required
+                            >
+                            @error('no_peserta')
+                                <div class="field-error">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nik">NIK <span class="required">*</span></label>
+                            <input
+                                type="text"
+                                id="nik"
+                                name="nik"
+                                class="form-control"
+                                value="{{ old('nik') }}"
+                                placeholder="16 digit NIK"
+                                required
+                            >
+                            @error('nik')
+                                <div class="field-error">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="jenis_kelamin">Jenis Kelamin <span class="required">*</span></label>
+                            <select id="jenis_kelamin" name="jenis_kelamin" class="form-control" required>
+                                <option value="">-- Pilih Jenis Kelamin --</option>
+                                <option value="L" {{ old('jenis_kelamin') == 'L' ? 'selected' : '' }}>Laki-laki</option>
+                                <option value="P" {{ old('jenis_kelamin') == 'P' ? 'selected' : '' }}>Perempuan</option>
+                            </select>
+                            @error('jenis_kelamin')
+                                <div class="field-error">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="skema_id">Skema Sertifikasi <span class="required">*</span></label>
+                            <select id="skema_id" name="skema_id" class="form-control" required>
+                                <option value="">-- Pilih Skema Sertifikasi --</option>
+                                @foreach($allSkemas as $skema)
+                                    <option value="{{ $skema->id }}" {{ old('skema_id') == $skema->id ? 'selected' : '' }}>
+                                        {{ $skema->kode_skema }} - {{ $skema->nama_skema }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('skema_id')
+                                <div class="field-error">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="no_telepon">Nomor Telepon</label>
+                            <input
+                                type="tel"
+                                id="no_telepon"
+                                name="no_telepon"
+                                class="form-control"
+                                value="{{ old('no_telepon') }}"
+                                placeholder="08xxxxxxxxxx"
+                            >
+                            @error('no_telepon')
+                                <div class="field-error">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="alamat">Alamat Lengkap</label>
+                            <textarea
+                                id="alamat"
+                                name="alamat"
+                                class="form-control"
+                                placeholder="Masukkan alamat lengkap"
+                            >{{ old('alamat') }}</textarea>
+                            @error('alamat')
+                                <div class="field-error">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                    </div>
+
+                    <button type="submit" class="btn-submit">
+                        Simpan Data Pertama Kali
+                    </button>
+                </form>
+            </div>
+        @endif
 
     </main>
-
-    <script>
-        function toggleEdit() {
-            const form = document.getElementById('editForm');
-
-            form.hidden = !form.hidden;
-
-            if (!form.hidden) {
-                form.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        }
-    </script>
 
 </body>
 </html>

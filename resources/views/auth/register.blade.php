@@ -204,7 +204,7 @@
         <div class="error-box">
             <strong>Periksa kembali data yang dimasukkan.</strong>
             @foreach($errors->all() as $error)
-                <div>{{ $error }}</div>
+                <div>• {{ $error }}</div>
             @endforeach
         </div>
     @endif
@@ -316,7 +316,7 @@
                     id="nik"
                     name="nik"
                     value="{{ old('nik') }}"
-                    placeholder="maksimal 16 digit"
+                    placeholder="Maksimal 16 digit"
                     maxlength="255"
                     required
                 >
@@ -329,14 +329,13 @@
                 <label for="jenis_kelamin">
                     Jenis Kelamin <span class="required">*</span>
                 </label>
+                {{-- Value disesuaikan dengan enum database 'L' dan 'P' --}}
                 <select id="jenis_kelamin" name="jenis_kelamin" required>
                     <option value="">-- Pilih Jenis Kelamin --</option>
-                    <option value="Laki-laki"
-                        {{ old('jenis_kelamin') == 'Laki-laki' ? 'selected' : '' }}>
+                    <option value="L" {{ old('jenis_kelamin') == 'L' ? 'selected' : '' }}>
                         Laki-laki
                     </option>
-                    <option value="Perempuan"
-                        {{ old('jenis_kelamin') == 'Perempuan' ? 'selected' : '' }}>
+                    <option value="P" {{ old('jenis_kelamin') == 'P' ? 'selected' : '' }}>
                         Perempuan
                     </option>
                 </select>
@@ -352,7 +351,7 @@
                     id="no_telepon"
                     name="no_telepon"
                     value="{{ old('no_telepon') }}"
-                    placeholder="maksimal 13 digit"
+                    placeholder="Maksimal 13 digit"
                     maxlength="20"
                 >
                 @error('no_telepon')

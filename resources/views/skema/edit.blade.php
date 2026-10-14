@@ -164,7 +164,7 @@
 
 
         <form
-            action="{{ route('skema.update', $skema) }}"
+            action="{{ route('skema.update', $skema->id) }}"
             method="POST"
         >
 

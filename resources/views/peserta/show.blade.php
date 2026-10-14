@@ -54,9 +54,6 @@
         }
     </style>
 </head>
-
-<body>
-
 <div class="container">
 
     <h2>Detail Peserta</h2>
@@ -72,13 +69,20 @@
     </div>
 
     <div class="data">
+        <div class="label">Email Akun</div>
+        <div>{{ $peserta->user->email ?? '-' }}</div>
+    </div>
+
+    <div class="data">
         <div class="label">NIK</div>
         <div>{{ $peserta->nik }}</div>
     </div>
 
     <div class="data">
         <div class="label">Jenis Kelamin</div>
-        <div>{{ $peserta->jenis_kelamin }}</div>
+        <div>
+            {{ $peserta->jenis_kelamin == 'L' ? 'Laki-laki' : ($peserta->jenis_kelamin == 'P' ? 'Perempuan' : $peserta->jenis_kelamin) }}
+        </div>
     </div>
 
     <div class="data">
@@ -94,9 +98,11 @@
     <div class="data">
         <div class="label">Skema Sertifikasi</div>
         <div>
-            {{ $peserta->skema->kode_skema ?? '-' }}
-            -
-            {{ $peserta->skema->nama_skema ?? '-' }}
+            @if($peserta->skema)
+                {{ $peserta->skema->kode_skema }} - {{ $peserta->skema->nama_skema }}
+            @else
+                -
+            @endif
         </div>
     </div>
 
@@ -109,6 +115,4 @@
     </a>
 
 </div>
-
-</body>
 </html>

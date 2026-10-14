@@ -1,7 +1,6 @@
+@extends('layouts.layout')
 
-@extends('layouts.admin')
-
-@section('title', 'Data Skema')
+@section('title', 'Data Skema Sertifikasi')
 
 @section('content')
 
@@ -57,13 +56,13 @@
                                 <div class="actions">
 
                                     <a
-                                        href="{{ route('skema.edit', $skema) }}"
+                                        href="{{ route('skema.edit', $skema->id) }}"
                                         class="btn btn-edit">
                                         Edit
                                     </a>
 
                                     <form
-                                        action="{{ route('skema.destroy', $skema) }}"
+                                        action="{{ route('skema.destroy', $skema->id) }}"
                                         method="POST"
                                         onsubmit="return confirm('Yakin ingin menghapus data skema ini?')">
 

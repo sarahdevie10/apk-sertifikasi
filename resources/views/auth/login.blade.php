@@ -123,7 +123,6 @@
 <body>
 
 <div class="login-container">
-
     <div class="login-box">
 
         <div class="logo">
@@ -136,6 +135,14 @@
             Aplikasi Pengelolaan Data Peserta Sertifikasi
         </p>
 
+        {{-- Flash message sukses setelah register --}}
+        @if (session('success'))
+            <div class="alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        {{-- Error message jika login gagal --}}
         @if ($errors->any())
             <div class="error">
                 {{ $errors->first() }}
@@ -145,17 +152,20 @@
         <form action="{{ route('login.process') }}" method="POST">
             @csrf
 
-            <label>Email</label>
+            <label for="email">Email</label>
             <input
+                id="email"
                 type="email"
                 name="email"
                 value="{{ old('email') }}"
                 placeholder="Masukkan email"
                 required
+                autofocus
             >
 
-            <label>Password</label>
+            <label for="password">Password</label>
             <input
+                id="password"
                 type="password"
                 name="password"
                 placeholder="Masukkan password"
@@ -168,11 +178,11 @@
         </form>
 
         <p style="text-align: center; margin-top: 18px; font-size: 13px; color: #64748b;">
-    Belum punya akun?
-    <a href="{{ route('register') }}"
-       style="color: #111827; font-weight: bold; text-decoration: none;">
-        Daftar di sini
-    </a>
+            Belum punya akun?
+            <a href="{{ route('register') }}"
+               style="color: #0f172a; font-weight: bold; text-decoration: none;">
+               Daftar di sini
+            </a>
         </p>
 
         <div class="footer">
@@ -180,7 +190,6 @@
         </div>
 
     </div>
-
 </div>
 
 </body>

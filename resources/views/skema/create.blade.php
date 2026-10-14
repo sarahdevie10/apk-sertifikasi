@@ -1,5 +1,5 @@
 
-@extends('layouts.admin')
+@extends('layouts.layout')
 
 @section('title', 'Tambah Skema')
 
@@ -107,7 +107,7 @@
         }
     </style>
 
-    <div class="page-header">
+  <div class="page-header">
         <div>
             <h1>Tambah Skema Sertifikasi</h1>
             <p>Tambahkan data skema sertifikasi baru.</p>

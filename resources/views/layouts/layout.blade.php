@@ -492,36 +492,36 @@
 
     <aside class="sidebar">
 
-            <div class="brand">
-        <div class="brand-logo">S</div>
-        <div class="brand-text">
-            <div class="brand-name">Sertifikasi</div>
-            <div class="brand-subtitle">Pengelolaan Data</div>
-        </div>
-    </div>
-
-    <!-- PROFIL AKUN -->
-    <div class="profile-card">
-        <div class="profile-avatar">
-            {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
-        </div>
-
-        <div class="profile-info">
-            <div class="profile-name">
-                {{ Auth::user()->name }}
-            </div>
-
-            <div class="profile-email">
-                {{ Auth::user()->email }}
-            </div>
-
-            <div class="profile-label">
-                Profil Akun
+        <div class="brand">
+            <div class="brand-logo">S</div>
+            <div class="brand-text">
+                <div class="brand-name">Sertifikasi</div>
+                <div class="brand-subtitle">Pengelolaan Data</div>
             </div>
         </div>
-    </div>
 
-    <p class="menu-title">MENU</p>
+        <!-- PROFIL AKUN -->
+        <div class="profile-card">
+            <div class="profile-avatar">
+                {{ strtoupper(substr(Auth::user()->name ?? 'A', 0, 1)) }}
+            </div>
+
+            <div class="profile-info">
+                <div class="profile-name">
+                    {{ Auth::user()->name ?? 'Admin' }}
+                </div>
+
+                <div class="profile-email">
+                    {{ Auth::user()->email ?? 'admin@gmail.com' }}
+                </div>
+
+                <div class="profile-label">
+                    Profil Akun
+                </div>
+            </div>
+        </div>
+
+        <p class="menu-title">MENU</p>
 
         <nav>
             <a href="{{ route('dashboard') }}"

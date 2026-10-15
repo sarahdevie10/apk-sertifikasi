@@ -317,7 +317,7 @@
                     name="nik"
                     value="{{ old('nik') }}"
                     placeholder="Maksimal 16 digit"
-                    maxlength="255"
+                    maxlength="16"
                     required
                 >
                 @error('nik')
@@ -352,7 +352,7 @@
                     name="no_telepon"
                     value="{{ old('no_telepon') }}"
                     placeholder="Maksimal 13 digit"
-                    maxlength="20"
+                    maxlength="13"
                 >
                 @error('no_telepon')
                     <div class="error">{{ $message }}</div>

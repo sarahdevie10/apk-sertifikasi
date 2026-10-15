@@ -77,7 +77,7 @@ class AuthController extends Controller
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'no_peserta' => ['required', 'string', 'max:255', 'unique:pesertas,no_peserta'],
-            'nik' => ['required', 'string', 'max:255', 'unique:pesertas,nik'],
+            'nik' => ['required', 'string', 'max:16', 'unique:pesertas,nik'],
             'jenis_kelamin' => ['required', 'in:L,P'], // Disesuaikan dengan enum 'L','P' di database
             'no_telepon' => ['nullable', 'string', 'max:20'],
             'alamat' => ['nullable', 'string'],
